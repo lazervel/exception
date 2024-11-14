@@ -3,13 +3,28 @@
 declare(strict_types=1);
 
 /**
+ * Exception library managing multiple exceptions with CLI support for creating,
+ * removing, and updating exceptions.
  * 
+ * The (exception) Github repository
+ * @see       https://github.com/lazervel/exception
+ * 
+ * @author    Shahzada Modassir <shahzadamodassir@gmail.com>
+ * @author    Shahzadi Afsara   <shahzadiafsara@gmail.com>
+ * 
+ * @copyright (c) Shahzada Modassir
+ * @copyright (c) Shahzadi Afsara
+ * 
+ * @license   MIT License
+ * @see       https://github.com/lazervel/exception/blob/main/LICENSE
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
  */
 namespace Modassir\Exception;
 
 class Exception
 {
-  private const CUSTOM_EXCEPTION_DIR = CUSTOM_EXCEPTION_DIR ?? __DIR__.DIRECTORY_SEPARATOR.'Custom';
+  private const CUSTOM_EXCEPTION_DIR = __DIR__.DIRECTORY_SEPARATOR.'Custom';
   private const CUSTOM_EXCEPTION_NAMESPACE = 'namespace Modassir\\Exception\\Custom;';
   private const CUSTOM_EXCEPTION_USE = 'use Modassir\\Exception\\Exception\\';
 
@@ -30,6 +45,14 @@ class Exception
     $this->executor      = $executor;
     $this->primaryClass  = $primaryClass;
     $this->secondryClass = $secondryClass;
+  }
+
+  /**
+   * @return string custom directory location.
+   */
+  private function CED() : string
+  {
+    return \defined('CUSTOM_EXCEPTION_DIR') ? CUSTOM_EXCEPTION_DIR : $this->CED();
   }
 
   /**
@@ -105,7 +128,7 @@ class Exception
       );
     }
 
-    $lines = @\file(($path = \sprintf('%s/%s.php', self::CUSTOM_EXCEPTION_DIR, $exception)));
+    $lines = @\file(($path = \sprintf('%s/%s.php', $this->CED(), $exception)));
 
     $matches_signature = \sprintf('class %s extends', $exception);
 
@@ -117,7 +140,7 @@ class Exception
     }
 
     @\file_put_contents($path, \join("", $lines));
-    \rename($path, \sprintf('%s/%s.php', self::CUSTOM_EXCEPTION_DIR, $newClass));
+    \rename($path, \sprintf('%s/%s.php', $this->CED(), $newClass));
     self::exit("\nSuccess: Exception [%s] has been renamed.\n\n", false, $newClass);
   }
 
@@ -133,7 +156,7 @@ class Exception
       self::exit("\nError: Could not create Exception Invalid subclass [%s].\n\n", true, $subClass);
     }
 
-    if (($dir = self::CUSTOM_EXCEPTION_DIR) && !\is_dir($dir)) {
+    if (($dir = $this->CED()) && !\is_dir($dir)) {
       \mkdir($dir);
     }
 
@@ -154,7 +177,7 @@ class Exception
 
   private function exists(string $exception) : bool
   {
-    return \file_exists(\sprintf('%s/%s.php', self::CUSTOM_EXCEPTION_DIR, $exception));
+    return \file_exists(\sprintf('%s/%s.php', $this->CED(), $exception));
   }
 
   /**
@@ -171,7 +194,7 @@ class Exception
     }
 
     if (self::exists($exception)) {
-      \unlink(\sprintf('%s/%s.php', self::CUSTOM_EXCEPTION_DIR, $exception));
+      \unlink(\sprintf('%s/%s.php', $this->CED(), $exception));
       self::exit("\nSuccess: Exception [%s] has been removed.\n\n", false, $exception);
     } else {
       self::exit("\nError: Could not remove Exception [%s] is not found.\n\n", true, $exception);
