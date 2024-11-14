@@ -7,15 +7,23 @@ if (isset($GLOBALS['_composer_autoload_path'])) {
 
   unset($GLOBALS['_composer_autoload_path']);
 } else {
-  foreach([__DIR__.'/../vendor/autoload.php', __DIR__.'/../../vendor/autoload.php'] as $autoloader) {
+  foreach([__DIR__.'/../vendor/autoload.php', __DIR__.'/../../vendor/autoload.php', __DIR__ . '/vendor/autoload.php'] as $autoloader) {
     if (\file_exists($autoloader)) {
       define('INSTALLED_AUTOLOAD_EXCEPTION_PATH', $autoloader);
+      break;
     }
   }
 }
 
 if (!defined('INSTALLED_AUTOLOAD_EXCEPTION_PATH')) {
-  
+  fwrite(
+    STDERR,
+    'You need to set up the project dependencies using Composer:' . PHP_EOL . PHP_EOL .
+    '    composer install' . PHP_EOL . PHP_EOL .
+    'You can learn all about Composer on https://getcomposer.org/.' . PHP_EOL
+  );
+
+  die(1);
 }
 
 require INSTALLED_AUTOLOAD_EXCEPTION_PATH;
