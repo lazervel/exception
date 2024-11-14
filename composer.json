@@ -1,0 +1,52 @@
+{
+  "name": "modassir/exception",
+  "description": "Exception library managing multiple exceptions with CLI support for creating, removing, and updating exceptions.",
+  "type": "library",
+  "license": "MIT",
+  "keywords": [
+    "exceptions",
+    "custom exceptions",
+    "error handling",
+    "exception",
+    "cli",
+    "exception manager",
+    "php exceptions"
+  ],
+  "autoload": {
+    "psr-4": {
+      "Modassir\\Exception\\": "src/"
+    }
+  },
+  "require": {
+    "php": "^7.2 || ^8.0"
+  },
+  "bin": [
+    "excep"
+  ],
+  "authors": [
+    {
+      "name": "Shahzada Modassir",
+      "email": "shahzadamodassir@gmail.com",
+      "homepage": "https://github.com/shahzadamodassir"
+    }
+  ],
+  "funding": [
+    {
+      "type": "YouTube",
+      "https": "https://youtube.com/@shahzadamodassir"
+    },
+    {
+      "type": "Patreon",
+      "url": "https://patreon.com/shahzadamodassir"
+    },
+    {
+      "type": "Github",
+      "url": "https://github.com/shahzadamodassir"
+    },
+    {
+      "type": "Opencollective",
+      "url": "https://opencollective.com/shahzadamodassir"
+    }
+  ],
+  "minimum-stability": "stable"
+}
