@@ -2,9 +2,15 @@
 <?php
 declare(strict_types=1);
 
-foreach([__DIR__.'/../vendor/autoload.php', __DIR__.'/../../vendor/autoload.php'] as $autoloader) {
-  if (\file_exists($autoloader)) {
-    define('INSTALLED_AUTOLOAD_EXCEPTION_PATH', $autoloader);
+if (isset($GLOBALS['_composer_autoload_path'])) {
+  define('INSTALLED_AUTOLOAD_EXCEPTION_PATH', $GLOBALS['_composer_autoload_path']);
+
+  unset($GLOBALS['_composer_autoload_path']);
+} else {
+  foreach([__DIR__.'/../vendor/autoload.php', __DIR__.'/../../vendor/autoload.php'] as $autoloader) {
+    if (\file_exists($autoloader)) {
+      define('INSTALLED_AUTOLOAD_EXCEPTION_PATH', $autoloader);
+    }
   }
 }
 
